@@ -13,6 +13,7 @@ Run:  streamlit run app.py
 
 import streamlit as st
 import config
+from client import get_qdrant_client
 
 # ══════════════════════════════════════════════════════
 # PAGE CONFIG
@@ -316,7 +317,7 @@ if not st.session_state.ingested and config.AUTO_INGEST_ON_STARTUP:
         # Check if already ingested
         try:
             from qdrant_client import QdrantClient
-            qc = QdrantClient(path=str(config.QDRANT_PATH))
+            qc = get_qdrant_client()
             info = qc.get_collection(config.QDRANT_COLLECTION)
             if info.points_count > 0:
                 st.session_state.ingested = True
@@ -361,7 +362,7 @@ with st.sidebar:
     st.markdown("### 📊 Knowledge base")
     try:
         from qdrant_client import QdrantClient
-        qc = QdrantClient(path=str(config.QDRANT_PATH))
+        qc = get_qdrant_client()
         info = qc.get_collection(config.QDRANT_COLLECTION)
         chunk_count = info.points_count
 
@@ -387,7 +388,7 @@ with st.sidebar:
         if st.button("🗑️ Clear DB", use_container_width=True):
             try:
                 from qdrant_client import QdrantClient
-                qc = QdrantClient(path=str(config.QDRANT_PATH))
+                qc = get_qdrant_client()
                 qc.delete_collection(config.QDRANT_COLLECTION)
                 from semantic_cache import clear_cache
                 clear_cache()

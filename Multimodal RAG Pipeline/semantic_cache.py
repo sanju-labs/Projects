@@ -16,7 +16,7 @@ import time
 import json
 
 from langchain_openai import OpenAIEmbeddings
-from qdrant_client import QdrantClient
+from client import get_qdrant_client
 from qdrant_client.models import (
     Distance, VectorParams, PointStruct,
 )
@@ -24,7 +24,7 @@ from qdrant_client.models import (
 import config
 
 # ── Clients ──────────────────────────────────────────
-qdrant_client = QdrantClient(path=str(config.QDRANT_PATH))
+qdrant_client = get_qdrant_client()
 embeddings = OpenAIEmbeddings(
     model=config.EMBEDDING_MODEL,
     openai_api_key=config.OPENAI_API_KEY,

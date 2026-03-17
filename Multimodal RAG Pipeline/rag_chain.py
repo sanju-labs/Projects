@@ -21,7 +21,8 @@ import semantic_cache
 
 # ── Clients ──────────────────────────────────────────
 openai_client = OpenAI(api_key=config.OPENAI_API_KEY)
-qdrant_client = QdrantClient(path=str(config.QDRANT_PATH))
+from client import get_qdrant_client
+qdrant_client = get_qdrant_client()
 embeddings = OpenAIEmbeddings(
     model=config.EMBEDDING_MODEL,
     openai_api_key=config.OPENAI_API_KEY,

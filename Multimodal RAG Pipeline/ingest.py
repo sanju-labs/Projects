@@ -16,22 +16,24 @@ import hashlib
 import time
 from pathlib import Path
 from collections import Counter
+from typing import Dict
 
 import fitz  # PyMuPDF
 from openai import OpenAI
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
-from qdrant_client import QdrantClient
+from client import get_qdrant_client
 from qdrant_client.models import (
     Distance, VectorParams, PointStruct,
-    SparseVector, SparseVectorParams, SparseIndexParams, VectorParamsMap,
+    SparseVector, SparseVectorParams, SparseIndexParams,
 )
 
 import config
 
 # ── Clients ──────────────────────────────────────────
 openai_client = OpenAI(api_key=config.OPENAI_API_KEY)
-qdrant_client = QdrantClient(path=str(config.QDRANT_PATH))
+from client import get_qdrant_client
+qdrant_client = get_qdrant_client()
 embeddings = OpenAIEmbeddings(
     model=config.EMBEDDING_MODEL,
     openai_api_key=config.OPENAI_API_KEY,
@@ -210,9 +212,9 @@ def ensure_collection():
 
         qdrant_client.create_collection(
             collection_name=config.QDRANT_COLLECTION,
-            vectors_config=VectorParamsMap(map={
-                "dense": VectorParams(size=config.EMBEDDING_DIMS, distance=Distance.COSINE),
-            }),
+        vectors_config={
+            "dense": VectorParams(size=config.EMBEDDING_DIMS, distance=Distance.COSINE),
+        },
             sparse_vectors_config=sparse_config,
         )
         print(f"  ✅ Created collection: {config.QDRANT_COLLECTION}")
