@@ -1,0 +1,1 @@
+-r "Multimodal RAG Pipeline/requirements.txt"
