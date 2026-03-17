@@ -12,12 +12,10 @@ load_dotenv()
 # ── Paths ────────────────────────────────────────────
 PROJECT_ROOT = Path(__file__).parent
 DATA_DIR = PROJECT_ROOT / "data"
-QDRANT_PATH = PROJECT_ROOT / "qdrant_data"
 IMAGE_CACHE = PROJECT_ROOT / ".image_cache"
 
 # Create dirs if missing
 DATA_DIR.mkdir(exist_ok=True)
-QDRANT_PATH.mkdir(exist_ok=True)
 IMAGE_CACHE.mkdir(exist_ok=True)
 
 # ── API Keys ─────────────────────────────────────────
